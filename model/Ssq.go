@@ -7,3 +7,4 @@ type Ssq struct {
 
 // 啦啦啦啦啦
 //这是vscode
+// 0000000000
