@@ -93,7 +93,7 @@ func (UserController) AddUser(c *gin.Context) {
 			util.Success(c, err)
 		}
 	} else {
-		util.Error(c, -1, "不能为空")
+		util.Error(c, -1, "不能为空。")
 	}
 	// result := db.Create(&user) // 通过数据的指针来创建
 }
