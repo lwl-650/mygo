@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mygo/model"
 	"mygo/util"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,8 +54,20 @@ func (UserController) Add(c *gin.Context) {
 
 func (UserController) FindUser(c *gin.Context) {
 	userList := []model.User{}
-	util.DB.Find(&userList)
-	// fmt.Println(userList)
+	var getPage int
+	page, _ := strconv.Atoi(c.Query("page"))
+	num, _ := strconv.Atoi(c.Query("num"))
+	if page > 1 {
+		getPage = (page - 1) * 5
+	} else {
+		getPage = 0
+	}
+	if num == 0 {
+		num = 10
+	}
+	fmt.Println(page, "=========================", num)
+	// util.DB.Find(&userList)
+	util.DB.Limit(num).Offset(getPage).Find(&userList)
 	util.Success(c, userList)
 }
 

@@ -24,3 +24,6 @@ go get -v golang.org/x/lint/golint
 
 # 3
 `` go get github.com/pilu/fresh
+
+# gorm
+https://learnku.com/docs/gorm/v2/query/9733
