@@ -54,18 +54,11 @@ func (UserController) Add(c *gin.Context) {
 
 func (UserController) FindUser(c *gin.Context) {
 	userList := []model.User{}
-	var getPage int
-	page, _ := strconv.Atoi(c.Query("page"))
-	num, _ := strconv.Atoi(c.Query("num"))
-	if page > 1 {
-		getPage = (page - 1) * 5
-	} else {
-		getPage = 0
-	}
-	if num == 0 {
-		num = 10
-	}
-	fmt.Println(page, "=========================", num)
+	page, _ := strconv.Atoi(c.PostForm("page"))
+	num, _ := strconv.Atoi(c.PostForm("num"))
+	getPage := util.If(page > 1, (page-1)*5, 0)
+	num = util.If(num == 0, 10, num)
+	fmt.Println(page, "===========", getPage, "==============", num)
 	// util.DB.Find(&userList)
 	util.DB.Limit(num).Offset(getPage).Find(&userList)
 	util.Success(c, userList)
@@ -112,11 +105,10 @@ func (UserController) AddUser(c *gin.Context) {
 }
 
 func (UserController) DelById(c *gin.Context) {
-	id := c.Query("id")
+	id := c.PostForm("id")
 	fmt.Println(id)
-	fmt.Println(util.DB.Delete(&model.User{}, id).Error == nil)
 	if id != "" && util.DB.Delete(&model.User{}, id).Error == nil {
-		util.Success(c, util.DB.Delete(&model.User{}, id).Error)
+		util.Success(c, 1)
 	} else {
 		util.Error(c, -1, "删除失败")
 	}
