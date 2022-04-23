@@ -82,11 +82,12 @@ func (UserController) FindById(c *gin.Context) {
 }
 
 func (UserController) AddUser(c *gin.Context) {
-	name := c.Query("name")
-	password := c.Query("password")
-	avatar := c.Query("avatar")
-	gender := c.Query("gender")
-	city := c.Query("city")
+	name := c.PostForm("name")
+	password := c.PostForm("password")
+	avatar := c.PostForm("avatar")
+	gender := c.PostForm("gender")
+	city := c.PostForm("city")
+	fmt.Println(name, password, avatar, gender, city)
 	if name != "" && password != "" {
 		user := model.User{Name: name, Password: password,
 			Avatar: avatar, Gender: gender, City: city,
