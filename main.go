@@ -8,6 +8,9 @@ import (
 
 func main() {
 
+	// f, _ := os.Create("gin.log")
+	// gin.DefaultWriter = io.MultiWriter(f)
+
 	// 创建一个默认的路由引擎
 	r := gin.Default()
 

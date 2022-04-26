@@ -58,8 +58,6 @@ func (UserController) FindUser(c *gin.Context) {
 	num, _ := strconv.Atoi(c.PostForm("num"))
 	getPage := util.If(page > 1, (page-1)*5, 0)
 	num = util.If(num == 0, 10, num)
-	fmt.Println(page, "===========", getPage, "==============", num)
-	// util.DB.Find(&userList)
 	util.DB.Limit(num).Offset(getPage).Find(&userList)
 	util.Success(c, userList)
 }
@@ -67,12 +65,8 @@ func (UserController) FindUser(c *gin.Context) {
 //通过id查询
 func (UserController) FindById(c *gin.Context) {
 	user := model.User{}
-	// id := c.Query("id")
 	sid := c.PostForm("id")
-	fmt.Println(sid, "999999999999999999999999999")
-	// fmt.Println(id, "==========================")
 	if sid != "" {
-		// fmt.Println(id)
 		util.DB.First(&user, sid)
 		util.Other(c, int(util.ApiCode.AUTHFORMATERROR),
 			util.ApiCode.GetMessage(util.ApiCode.CREATEUSERFAILED), user)

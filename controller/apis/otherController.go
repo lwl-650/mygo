@@ -26,7 +26,6 @@ func (OtherController) Ssq(c *gin.Context) {
 
 	getHttp := util.HttpTypr{}
 	res := getHttp.GetHttp("http://apis.juhe.cn/lottery/types?key=b919609752eac679e509cd49f10cfed0")
-
 	util.Success(c, res)
 }
 
