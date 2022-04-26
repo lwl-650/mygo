@@ -1,20 +1,19 @@
-package router
+package util
 
 import (
 	"fmt"
-	"mygo/util"
 
 	"github.com/robfig/cron/v3"
 )
 
 func fn() {
-	getHttp := util.HttpTypr{}
+	getHttp := HttpTypr{}
 	res := getHttp.GetHttp("http://apis.juhe.cn/lottery/types?key=b919609752eac679e509cd49f10cfed0")
 	// util.Success(c, res)
 	fmt.Println(res)
 }
 
-func main() {
+func Tack() {
 	crontab := cron.New(cron.WithSeconds()) //精确到秒
 	//定义定时器调用的任务函数
 	task := func() {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"mygo/router"
+	"mygo/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,8 +11,10 @@ func main() {
 
 	// f, _ := os.Create("gin.log")
 	// gin.DefaultWriter = io.MultiWriter(f)
-
 	// 创建一个默认的路由引擎
+
+	util.Tack()
+
 	r := gin.Default()
 
 	router.IndexRoutersInit(r)
