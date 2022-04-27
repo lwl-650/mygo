@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"mygo/controller/apis"
 
 	"github.com/gin-gonic/gin"
@@ -10,32 +9,30 @@ import (
 func IndexRoutersInit(r *gin.Engine) {
 	index := r.Group("/")
 	{
-		index.GET("/", func(ctx *gin.Context) {
-			fmt.Println(ctx.FullPath())
-			fmt.Println("中间")
-
-		}, apis.UserController{}.Index)
-		index.GET("/add", func(ctx *gin.Context) {
-			fmt.Println(ctx.FullPath())
-			fmt.Println(ctx.Request.Method)
-			fmt.Println(ctx.GetTime("123456"))
-			fmt.Println("中间")
-
-		}, apis.UserController{}.Add)
+		// index.Use(Content) //路由分组中间件
+		index.GET("/", apis.UserController{}.Index)
+		index.GET("/add", apis.UserController{}.Add)
 		index.POST("/find", apis.UserController{}.FindUser)
 		index.POST("/findId", apis.UserController{}.FindById)
 		index.POST("/addUser", apis.UserController{}.AddUser)
-		index.POST("/login", func(ctx *gin.Context) {
-
-			fmt.Println("中间")
-
-		}, apis.UserController{}.Login)
+		index.POST("/login", apis.UserController{}.Login)
 		index.POST("/delById", apis.UserController{}.DelById)
 	}
-
+	rhttp := r.Group("/")
+	{
+		rhttp.POST("/findRhttp", apis.RhttpController{}.FindHttpAll)
+		rhttp.POST("/delByRid", apis.RhttpController{}.DelHttpById)
+	}
+	tes := r.Group("/")
+	{
+		tes.POST("/getArr", apis.TesController{}.GetArr)
+		tes.POST("/getMap", apis.TesController{}.GetMap)
+		tes.POST("/getMapArr", apis.TesController{}.GetMapArr)
+		tes.POST("/getArrMap", apis.TesController{}.GetArrMap)
+	}
 	other := r.Group("/")
 	{
-		other.POST("/ssq", apis.OtherController{}.Ssq)
+		other.GET("/ssq", apis.OtherController{}.Ssq)
 		other.POST("/getssq", apis.OtherController{}.GetSsq)
 	}
 }

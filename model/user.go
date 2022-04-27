@@ -10,6 +10,7 @@ type User struct {
 	City     string `json:"city"`
 }
 
+//指定表名
 func (User) TableName() string {
 	return "user"
 }
