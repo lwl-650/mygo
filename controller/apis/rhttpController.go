@@ -1,8 +1,10 @@
 package apis
 
 import (
+	"fmt"
 	"mygo/model"
 	"mygo/util"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,15 +21,29 @@ func (RhttpController) SetRhttp(c *gin.Context) {
 
 func (RhttpController) FindHttpAll(c *gin.Context) {
 	rhttpList := []model.R_http{}
-	// var count int64
-
-	if util.DB.Find(&rhttpList).Error == nil {
-		// fmt.Println(util.DB.Find(&rhttpList).Count(&count))
-		util.Success(c, rhttpList)
+	var count int64
+	rmap := make(map[string]interface{})
+	rpage, _ := strconv.Atoi(c.PostForm("current"))
+	rnum, _ := strconv.Atoi(c.PostForm("pageSize"))
+	username := c.PostForm("username")
+	method := c.PostForm("method")
+	status := c.PostForm("status")
+	fmt.Println(c.PostForm("current"), c.PostForm("pageSize"))
+	fmt.Println(rpage, rnum)
+	rnum = util.If(rnum == 0, 10, rnum)
+	getPage := util.If(rpage > 1, (rpage-1)*rnum, 0)
+	fmt.Println(username, method, status)
+	fmt.Println("从什么位置开始=>", getPage, "查询多少条=>", rnum)
+	if util.DB.Where("r_name LIKE ? AND r_method = ? AND r_status = ? ", "%"+username+"%",
+		"%"+method+"%", "%"+status+"%").Limit(rnum).Offset(getPage).Find(&rhttpList).Error == nil {
+		util.DB.Where("r_name LIKE ? AND r_method = ? AND r_status = ? ", "%"+username+"%",
+			"%"+method+"%", "%"+status+"%").Find(&model.R_http{}).Count(&count)
+		rmap["data"] = rhttpList
+		rmap["count"] = count
+		util.Success(c, rmap)
 	} else {
-		util.Error(c, -1, "err")
+		util.Error(c, -1, util.ApiCode.Message[util.ApiCode.FAILED])
 	}
-
 }
 
 func (RhttpController) DelHttpById(c *gin.Context) {
