@@ -18,9 +18,20 @@ func IndexRoutersInit(r *gin.Engine) {
 		index.POST("/login", apis.UserController{}.Login)
 		index.POST("/delById", apis.UserController{}.DelById)
 	}
+
+	admin := r.Group("/")
+	{
+		admin.POST("/setAdmin", apis.AdminController{}.SetAdmin)
+		admin.GET("/findAdmin", apis.AdminController{}.FindAdmin)
+		admin.PUT("/updateAdmin", apis.AdminController{}.UpdateAdmin)
+	}
+	qiniu := r.Group("/")
+	{
+		qiniu.POST("/upload", apis.QiniuController{}.Upload)
+	}
 	rhttp := r.Group("/")
 	{
-		rhttp.POST("/findRhttp", apis.RhttpController{}.FindHttpAll)
+		rhttp.GET("/findRhttp", apis.RhttpController{}.FindHttpAll)
 		rhttp.POST("/delByRid", apis.RhttpController{}.DelHttpById)
 	}
 	tes := r.Group("/")

@@ -34,10 +34,8 @@ func (RhttpController) FindHttpAll(c *gin.Context) {
 	getPage := util.If(rpage > 1, (rpage-1)*rnum, 0)
 	fmt.Println(username, method, status)
 	fmt.Println("从什么位置开始=>", getPage, "查询多少条=>", rnum)
-	if util.DB.Where("r_name LIKE ? AND r_method = ? AND r_status = ? ", "%"+username+"%",
-		"%"+method+"%", "%"+status+"%").Limit(rnum).Offset(getPage).Find(&rhttpList).Error == nil {
-		util.DB.Where("r_name LIKE ? AND r_method = ? AND r_status = ? ", "%"+username+"%",
-			"%"+method+"%", "%"+status+"%").Find(&model.R_http{}).Count(&count)
+	if util.DB.Where("r_name LIKE ? ", "%"+username+"%").Limit(rnum).Offset(getPage).Find(&rhttpList).Error == nil {
+		util.DB.Where("r_name LIKE ?", "%"+username+"%").Find(&model.R_http{}).Count(&count)
 		rmap["data"] = rhttpList
 		rmap["count"] = count
 		util.Success(c, rmap)
