@@ -21,15 +21,16 @@ func (RhttpController) SetRhttp(c *gin.Context) {
 
 func (RhttpController) FindHttpAll(c *gin.Context) {
 	rhttpList := []model.R_http{}
+	fmt.Println(c.Query("current"), c.Query("pageSize"), "=====")
 	var count int64
 	rmap := make(map[string]interface{})
-	rpage, _ := strconv.Atoi(c.PostForm("current"))
-	rnum, _ := strconv.Atoi(c.PostForm("pageSize"))
-	username := c.PostForm("username")
-	method := c.PostForm("method")
-	status := c.PostForm("status")
-	fmt.Println(c.PostForm("current"), c.PostForm("pageSize"))
-	fmt.Println(rpage, rnum)
+	rpage, _ := strconv.Atoi(c.Query("current"))
+	rnum, _ := strconv.Atoi(c.Query("pageSize"))
+	username := c.Query("username")
+	method := c.Query("method")
+	status := c.Query("status")
+
+	fmt.Println(rpage, rnum, "+++++")
 	rnum = util.If(rnum == 0, 10, rnum)
 	getPage := util.If(rpage > 1, (rpage-1)*rnum, 0)
 	fmt.Println(username, method, status)
@@ -50,5 +51,14 @@ func (RhttpController) DelHttpById(c *gin.Context) {
 	} else {
 		util.Error(c, -1, util.ApiCode.Message[util.ApiCode.FAILED])
 	}
+
+}
+
+func (RhttpController) Getar(c *gin.Context) {
+	user := []model.R_http{}
+	util.DB.Preload("Admin").Find(&user)
+
+	// Preload("Admin").
+	util.Success(c, user)
 
 }

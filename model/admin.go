@@ -6,6 +6,7 @@ type Admin struct {
 	A_pass     string `json:"a_pass"`
 	A_portrait string `json:"a_portrait"`
 	A_grade    int    `json:"a_grade"`
+	R_http     []R_http
 }
 
 // 创建关联表名函数
