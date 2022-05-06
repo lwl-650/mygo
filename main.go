@@ -17,7 +17,7 @@ func main() {
 	r := gin.Default()
 	r.Use(router.Content) //全局中间件
 	router.IndexRoutersInit(r)
-
+	router.HostRouters(r)
 	// 启动HTTP服务，默认在0.0.0.0:8080启动服务
 	r.Run(":8088")
 

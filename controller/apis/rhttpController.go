@@ -5,8 +5,10 @@ import (
 	"mygo/model"
 	"mygo/util"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/shirou/gopsutil/cpu"
 )
 
 type RhttpController struct {
@@ -64,6 +66,21 @@ func (RhttpController) Getar(c *gin.Context) {
 
 	// user := []model.Rhttp{}
 	// util.DB.Preload("Rhttp").Find(&getAdmin)
-	util.Success(c, "")
+	// info, _ := host.Info()
+	// fmt.Println(info)
 
+	// info, _ := cpu.Info() //总体信息
+	// fmt.Println(info)
+
+	// a, _ := cpu.Counts(true) //cpu逻辑数量
+	// fmt.Println(a)           //4
+	// a, _ = cpu.Counts(false) //cpu物理核心
+	// fmt.Println(a)           //如果是2说明是双核超线程, 如果是4则是4核非超线程
+
+	// info, _ := cpu.Times(false)
+	// fmt.Println(info)
+
+	info, _ := cpu.Percent(time.Duration(time.Second), false)
+	fmt.Println(info)
+	util.Success(c, info)
 }

@@ -36,6 +36,7 @@ func IndexRoutersInit(r *gin.Engine) {
 		rhttp.POST("/delByRid", apis.RhttpController{}.DelHttpById)
 		rhttp.POST("/getAr", apis.RhttpController{}.Getar)
 	}
+
 	tes := r.Group("/")
 	{
 		tes.POST("/getArr", apis.TesController{}.GetArr)
