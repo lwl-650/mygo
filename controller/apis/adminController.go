@@ -24,7 +24,6 @@ func (AdminController) SetAdmin(c *gin.Context) {
 		A_portrait: A_portrait,
 		A_grade:    A_grade,
 	}
-	fmt.Println(setAdmin)
 	if util.DB.Create(&setAdmin) == nil {
 		util.Success(c, util.ApiCode.SUCCESS)
 	}
@@ -51,13 +50,17 @@ func (AdminController) UpdateAdmin(c *gin.Context) {
 
 func (AdminController) FindAdminByLogin(c *gin.Context) {
 	admin := model.Admin{}
+	setLogin := model.Loginadmin{}
 	aname := c.PostForm("aname")
 	apass := c.PostForm("apass")
+	setLogin.Lname = aname
+	setLogin.Ltime = util.GetTime()
 	if aname != "" && apass != "" {
 		util.DB.Where("a_name=?", aname).First(&admin)
 		fmt.Println(admin.A_pass)
 		if admin.A_pass == apass {
 			util.Success(c, admin)
+			util.DB.Create(&setLogin)
 		} else {
 			util.Error(c, -1, util.ApiCode.Message[util.ApiCode.FAILED])
 		}

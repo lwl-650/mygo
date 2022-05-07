@@ -19,6 +19,7 @@ type Sql struct {
 }
 
 func init() {
+
 	getsql := Sql{
 		root:     "root",
 		password: "123456",

@@ -3,6 +3,8 @@ package apis
 import (
 	"fmt"
 	"mygo/util"
+	"path"
+	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +19,38 @@ type HostController struct {
 
 func (HostController) GetCpu(c *gin.Context) {
 	rate := make(map[string]interface{})
+	// getP := make([]interface{}, 1)
+	getP := []interface{}{}
+	var total, usedT, freeT uint64
+
+	// 本机信息
+	localMachine, _ := host.Info()
+	// fmt.Println(localMachine)
+
+	// cpu
+	getCpu, _ := cpu.Info()
+	// fmt.Println(getCpu)
+
+	// 内存
+	memory, _ := mem.VirtualMemory()
+	// fmt.Println(memory)
+	// 交换分区
+	// swapPartition, _ := mem.SwapMemory()
+	// fmt.Println(swapPartition)
+
+	// 获取磁盘信息
+	info, _ := disk.Partitions(true) //所有分区
+	// fmt.Println(info)
+
+	for one := range info {
+		// fmt.Println(info[one].Device)
+		info2, _ := disk.Usage(info[one].Device)
+		total += info2.Total
+		usedT += info2.Used
+		freeT += info2.Free
+		getP = append(getP, info2)
+	}
+
 	// cpu使用率
 	rate["GetCpuPercent"] = GetCpuPercent()
 	// 内存使用率
@@ -24,24 +58,6 @@ func (HostController) GetCpu(c *gin.Context) {
 	//磁盘使用率
 	rate["GetDiskPercent"] = GetDiskPercent()
 
-	// 本机信息
-	localMachine, _ := host.Info()
-	fmt.Println(localMachine)
-
-	// cpu
-	getCpu, _ := cpu.Info()
-	fmt.Println(getCpu)
-
-	// 内存
-	memory, _ := mem.VirtualMemory()
-	fmt.Println(memory)
-	// 交换分区
-	swapPartition, _ := mem.SwapMemory()
-	fmt.Println(swapPartition)
-
-	// 获取磁盘信息
-	// info, _ := disk.Partitions(true) //所有分区
-	// fmt.Println(info)
 	// info2, _ := disk.Usage("D:") //指定某路径的硬盘使用情况
 	// fmt.Println(info2)
 	// info3, _ := disk.IOCounters() //所有硬盘的io信息
@@ -50,7 +66,45 @@ func (HostController) GetCpu(c *gin.Context) {
 	rate["localMachine"] = localMachine
 	rate["cpu"] = getCpu
 	rate["memory"] = memory
+
+	rate["diskUsed"] = usedT
+	rate["disk"] = getP
+	rate["diskTotal"] = total
+	rate["diskHard"] = freeT
+
+	gos := make(map[string]interface{})
+	gos["demoPath"] = demoPath()
+	gos["goPath"] = goPath()
+	gos["version"] = runtime.Version()
+
+	rate["go"] = gos
+
 	util.Success(c, rate)
+
+}
+
+func demoPath() string {
+	_, filename, _, ok := runtime.Caller(1)
+	var cwdPath string
+	if ok {
+		cwdPath = path.Join(path.Dir(filename), "../../") // the the main function file directory
+	} else {
+		cwdPath = "./"
+	}
+	fmt.Println("demopath:", cwdPath)
+	return cwdPath
+}
+
+func goPath() string {
+	_, filename, _, ok := runtime.Caller(2)
+	var cwdPath string
+	if ok {
+		cwdPath = path.Join(path.Dir(filename), "../../../../../") // the the main function file directory
+	} else {
+		cwdPath = "./"
+	}
+	fmt.Println("gopath:", cwdPath)
+	return cwdPath
 }
 
 // cpu使用率

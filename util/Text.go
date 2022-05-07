@@ -8,6 +8,7 @@ type Book struct {
 func (this *Book) SetName(name string) {
 	this.name = name
 }
+
 func (this *Book) GetName() string {
 	return this.name
 }
@@ -15,6 +16,7 @@ func (this *Book) GetName() string {
 func (this *Book) SetAge(age int) {
 	this.age = age
 }
+
 func (this *Book) GetAge() int {
 	return this.age
 }
