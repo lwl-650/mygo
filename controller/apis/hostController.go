@@ -3,8 +3,10 @@ package apis
 import (
 	"fmt"
 	"mygo/util"
+	"net"
 	"path"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -80,7 +82,35 @@ func (HostController) GetCpu(c *gin.Context) {
 	rate["go"] = gos
 
 	util.Success(c, rate)
+	go getIp()
 
+}
+
+func getIp() {
+	interface_list, err := net.Interfaces()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var byName *net.Interface
+	var addrList []net.Addr
+	var oneAddrs []string
+	for _, i := range interface_list {
+		byName, err = net.InterfaceByName(i.Name)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		addrList, err = byName.Addrs()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for _, oneAddr := range addrList {
+			oneAddrs = strings.SplitN(oneAddr.String(), "/", 2)
+			fmt.Println(i.Name, "-", oneAddrs[0])
+		}
+	}
 }
 
 func demoPath() string {
