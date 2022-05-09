@@ -13,6 +13,14 @@ func If[T any](condition bool, trueVal, falseVal T) T {
 	}
 }
 
+// func If(condition bool, trueVal, falseVal interface{}) interface{} {
+// 	if condition {
+// 		return trueVal
+// 	} else {
+// 		return falseVal
+// 	}
+// }
+
 // 格式化时间
 func GetTime() string {
 	getTime := time.Now()

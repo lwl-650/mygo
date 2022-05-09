@@ -34,6 +34,7 @@ func Error(c *gin.Context, code int, msg string) {
 	c.JSON(http.StatusOK, res)
 }
 
+// 自定义
 func Other(c *gin.Context, code int, msg string, data interface{}) {
 	res := Result{}
 	res.Code = code

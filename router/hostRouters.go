@@ -11,4 +11,9 @@ func HostRouters(r *gin.Engine) {
 	{
 		host.GET("/getCpu", apis.HostController{}.GetCpu)
 	}
+
+	web := r.Group("/")
+	{
+		web.GET("/web", apis.WebsocketController{}.GetPushNews)
+	}
 }

@@ -5,10 +5,8 @@ import (
 	"mygo/model"
 	"mygo/util"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shirou/gopsutil/cpu"
 )
 
 type RhttpController struct {
@@ -60,12 +58,12 @@ func (RhttpController) Getar(c *gin.Context) {
 	// fmt.Println(GetCpuPercent())
 
 	// getRhttp := model.Rhttp{}
-	// getAdmin := model.Admin{}
+	getAdmin := model.Admin{}
 
 	// util.DB.AutoMigrate(&getRhttp, &getAdmin)
 
-	// user := []model.Rhttp{}
-	// util.DB.Preload("Rhttp").Find(&getAdmin)
+	user := []model.Rhttp{}
+	util.DB.Preload("Rhttp").Find(&getAdmin)
 	// info, _ := host.Info()
 	// fmt.Println(info)
 
@@ -80,7 +78,5 @@ func (RhttpController) Getar(c *gin.Context) {
 	// info, _ := cpu.Times(false)
 	// fmt.Println(info)
 
-	info, _ := cpu.Percent(time.Duration(time.Second), false)
-	fmt.Println(info)
-	util.Success(c, info)
+	util.Success(c, user)
 }
