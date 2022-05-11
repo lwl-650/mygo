@@ -57,13 +57,29 @@ func (RhttpController) DelHttpById(c *gin.Context) {
 func (RhttpController) Getar(c *gin.Context) {
 	// fmt.Println(GetCpuPercent())
 
-	// getRhttp := model.Rhttp{}
-	getAdmin := model.Admin{}
+	// getRhttp := []model.Rhttp{}
+	// getAdmin := []model.Admin{}
 
 	// util.DB.AutoMigrate(&getRhttp, &getAdmin)
-
-	user := []model.Rhttp{}
-	util.DB.Preload("Rhttp").Find(&getAdmin)
+	// util.DB.Preload("Rhttps").Find(&getAdmin)
+	// util.DB.Preload("Admins").Find(&getRhttp)
+	// b := model.B{
+	// 	Bid:   5,
+	// 	Bname: "66",
+	// 	As: []model.A{
+	// 		{
+	// 			Aid:   6,
+	// 			Aname: "55",
+	// 		},
+	// 	},
+	// }
+	// util.DB.Create(&b)
+	// b := []model.B{}
+	// a := []model.A{}
+	// util.DB.Preload("As").Find(&b)
+	// util.DB.Preload("Bs").Find(&a)
+	// util.DB.AutoMigrate(&model.A{}, &model.B{})
+	// util.DB.Preload("Rhttp").Find(&getAdmin)
 	// info, _ := host.Info()
 	// fmt.Println(info)
 
@@ -78,5 +94,21 @@ func (RhttpController) Getar(c *gin.Context) {
 	// info, _ := cpu.Times(false)
 	// fmt.Println(info)
 
-	util.Success(c, user)
+	// util.DB.AutoMigrate(&model.X{}, &model.Y{})
+	// x := model.X{
+	// 	Xname: "zs",
+	// 	Y: []model.Y{
+	// 		{
+	// 			Yid:   2,
+	// 			Yname: "LS",
+	// 		},
+	// 	},
+	// }
+
+	// util.DB.Create(&x)
+
+	gy := []model.Y{}
+	// https://www.jianshu.com/p/4c6594d2fa06  联查 一对一地址
+	util.DB.Preload("X").Find(&gy)
+	util.Success(c, gy)
 }

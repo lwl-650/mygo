@@ -1,8 +1,9 @@
 package model
 
 type Rhttp struct {
-	// `json:"category";gorm:"foreignkey:CategoryID"`
-	R_id        uint    `json:"r_id"`
+	// gorm.Model
+	// `json:"y_id" gorm:"primaryKey"`
+	R_id        int     `json:"r_id"`
 	R_name      string  `json:"r_name"`
 	R_method    string  `json:"r_method"`
 	R_url       string  `json:"r_url"`
@@ -10,7 +11,7 @@ type Rhttp struct {
 	R_status    int     `json:"r_status"`
 	R_time      string  `json:"r_time"`
 	Adminid     uint    `json:"adminid"`
-	Admin       []Admin `gorm:"many2many:rhttp_admin;"`
+	Admins      []Admin `gorm:"many2many:rhttp_admin;"`
 }
 
 // Admin       Admin  `gorm:"foreignKey:a_id;references:adminid"`
