@@ -70,14 +70,21 @@ func (TesController) GetArrMap(c *gin.Context) {
 }
 
 func (TesController) Zhi(c *gin.Context) {
+	var b = 10
+	var a *int
+
+	a = &b
+	x := &b
+	fmt.Println(a)
+	fmt.Println(x)
+	// fmt.Println(reflect.TypeOf(a))
 
 	// fmt.Println(c)
-	// var i = 0
 
+	// var i = 10
 	// fmt.Println(i)
 	// fmt.Println(&i)
 	// a := &i
-	// fmt.Println(c *a)
 	// fmt.Println(a)
 	// util.Success(c, "")
 
