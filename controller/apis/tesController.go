@@ -68,3 +68,17 @@ func (TesController) GetArrMap(c *gin.Context) {
 	fmt.Println(dict)
 	util.Success(c, dict)
 }
+
+func (TesController) Zhi(c *gin.Context) {
+
+	// fmt.Println(c)
+	// var i = 0
+
+	// fmt.Println(i)
+	// fmt.Println(&i)
+	// a := &i
+	// fmt.Println(c *a)
+	// fmt.Println(a)
+	// util.Success(c, "")
+
+}

@@ -46,6 +46,7 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 		getMap["data"] = string(message)
 
 		// err = ws.WriteMessage(mt, message)
+
 		err = ws.WriteJSON(getMap)
 		if err != nil {
 			log.Println("write:", err)

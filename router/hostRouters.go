@@ -16,4 +16,5 @@ func HostRouters(r *gin.Engine) {
 	{
 		web.GET("/web", apis.WebsocketController{}.GetPushNews)
 	}
+
 }

@@ -8,6 +8,13 @@ import (
 
 func main() {
 
+	// b := model.Book{}
+	// fmt.Println(b)
+	// b.SetBook("zs", 18)
+	// fmt.Println(b)
+
+	// b.Siy()
+	// b.Siy2()
 	// f, _ := os.Create("gin.log")
 	// gin.DefaultWriter = io.MultiWriter(f)
 	// 创建一个默认的路由引擎

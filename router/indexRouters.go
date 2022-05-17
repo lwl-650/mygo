@@ -37,16 +37,17 @@ func IndexRoutersInit(r *gin.Engine) {
 		rhttp.POST("/getAr", apis.RhttpController{}.Getar)
 	}
 
+	other := r.Group("/")
+	{
+		other.GET("/ssq", apis.OtherController{}.Ssq)
+		other.POST("/getssq", apis.OtherController{}.GetSsq)
+	}
 	tes := r.Group("/")
 	{
 		tes.POST("/getArr", apis.TesController{}.GetArr)
 		tes.POST("/getMap", apis.TesController{}.GetMap)
 		tes.POST("/getMapArr", apis.TesController{}.GetMapArr)
 		tes.POST("/getArrMap", apis.TesController{}.GetArrMap)
-	}
-	other := r.Group("/")
-	{
-		other.GET("/ssq", apis.OtherController{}.Ssq)
-		other.POST("/getssq", apis.OtherController{}.GetSsq)
+		tes.POST("/zhi", apis.TesController{}.Zhi)
 	}
 }
