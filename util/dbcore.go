@@ -18,14 +18,14 @@ type Sql struct {
 	sqlname  string
 }
 
-func init() {
+var getsql = &Sql{
+	root:     ReadeIni("mysql.root"),
+	password: ReadeIni("mysql.password"),
+	local:    ReadeIni("mysql.local"),
+	sqlname:  ReadeIni("mysql.sqlname"),
+}
 
-	getsql := Sql{
-		root:     "root",
-		password: "123456",
-		local:    "127.0.0.1:3306",
-		sqlname:  "vueparent",
-	}
+func init() {
 
 	// 用户名:密码@tcp(ip:port)/数据库?charset=utf8mb4&parseTime=True&loc=Local
 	dsn := getsql.root + ":" + getsql.password + "@tcp(" + getsql.local + ")/" + getsql.sqlname + "?charset=utf8mb4&parseTime=True&loc=Local"

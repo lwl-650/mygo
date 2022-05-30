@@ -9,6 +9,9 @@ import (
 )
 
 // https://www.cnblogs.com/chnmig/p/14463837.html  websocket
+
+var list []*websocket.Conn
+
 type WebsocketController struct {
 }
 
@@ -29,10 +32,13 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 		err error
 	)
 	ws, err = upgrader.Upgrade(c.Writer, c.Request, nil)
+	list = append(list, ws)
 	if err != nil {
+
 		log.Print("upgrade:", err)
 		return
 	}
+
 	defer ws.Close()
 	for {
 
@@ -47,10 +53,14 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 
 		// err = ws.WriteMessage(mt, message)
 
-		err = ws.WriteJSON(getMap)
-		if err != nil {
-			log.Println("write:", err)
-			break
+		// err = ws.WriteJSON(getMap)
+		for _, value := range list {
+			err = value.WriteJSON(getMap)
+			if err != nil {
+				log.Println("write:", err)
+				break
+			}
 		}
+
 	}
 }
