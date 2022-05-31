@@ -1,7 +1,9 @@
 package apis
 
 import (
+	"fmt"
 	"log"
+	"mygo/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,8 +11,6 @@ import (
 )
 
 // https://www.cnblogs.com/chnmig/p/14463837.html  websocket
-
-var list []*websocket.Conn
 
 type WebsocketController struct {
 }
@@ -26,25 +26,50 @@ var upgrader = websocket.Upgrader{
 	},
 } // use default options
 
+var clientMap map[string]*websocket.Conn
+
+var pointMap map[string]*websocket.Conn
+
+func init() {
+	clientMap = make(map[string]*websocket.Conn)
+	pointMap = make(map[string]*websocket.Conn)
+}
+
 func (WebsocketController) GetPushNews(c *gin.Context) {
+
 	var (
 		ws  *websocket.Conn
 		err error
 	)
 	ws, err = upgrader.Upgrade(c.Writer, c.Request, nil)
-	list = append(list, ws)
-	if err != nil {
 
+	for id, _ := range clientMap {
+		if id == c.Query("id") {
+			err = ws.WriteJSON("id已存在")
+			if err != nil {
+				log.Println("write:", err)
+				break
+			}
+			ws.Close()
+			return
+		}
+	}
+
+	clientMap[c.Query("id")] = ws
+	if err != nil {
 		log.Print("upgrade:", err)
 		return
 	}
-
 	defer ws.Close()
+	fmt.Println(clientMap)
+	fmt.Println(len(clientMap))
 	for {
 
 		_, message, err := ws.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
+			delete(clientMap, c.Query("id"))
+			fmt.Println(clientMap)
 			break
 		}
 		log.Printf("recv: %s", message)
@@ -54,7 +79,9 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 		// err = ws.WriteMessage(mt, message)
 
 		// err = ws.WriteJSON(getMap)
-		for _, value := range list {
+		fmt.Println(clientMap)
+
+		for _, value := range clientMap {
 			err = value.WriteJSON(getMap)
 			if err != nil {
 				log.Println("write:", err)
@@ -63,4 +90,17 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 		}
 
 	}
+}
+
+func (WebsocketController) GetWebsocket(c *gin.Context) {
+	id := c.Query("id")
+	uid := c.Query("uid")
+	for index, value := range clientMap {
+		if index == uid || index == id {
+			pointMap[index] = value
+		}
+	}
+	fmt.Println(pointMap)
+	util.Success(c, pointMap)
+
 }
