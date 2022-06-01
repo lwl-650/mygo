@@ -5,6 +5,7 @@ import (
 	"log"
 	"mygo/util"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -29,6 +30,8 @@ var upgrader = websocket.Upgrader{
 var clientMap map[string]*websocket.Conn
 
 var pointMap map[string]*websocket.Conn
+
+var x float64 = 2
 
 func init() {
 	clientMap = make(map[string]*websocket.Conn)
@@ -66,26 +69,44 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 	for {
 
 		_, message, err := ws.ReadMessage()
+
 		if err != nil {
 			log.Println("read:", err)
 			delete(clientMap, c.Query("id"))
 			fmt.Println(clientMap)
 			break
 		}
+		fmt.Println(util.JSON(string(message))["type"], util.JSON(string(message))["msg"])
 		log.Printf("recv: %s", message)
 		getMap := make(map[string]interface{})
-		getMap["data"] = string(message)
+		getMap["data"] = util.JSON(string(message))["msg"]
 
 		// err = ws.WriteMessage(mt, message)
 
 		// err = ws.WriteJSON(getMap)
 		fmt.Println(clientMap)
+		fmt.Println(pointMap)
+		fmt.Println(util.JSON(string(message))["type"])
+		fmt.Println(reflect.TypeOf(util.JSON(string(message))["type"]))
 
-		for _, value := range clientMap {
-			err = value.WriteJSON(getMap)
-			if err != nil {
-				log.Println("write:", err)
-				break
+		fmt.Println(util.JSON(string(message))["type"] == x)
+
+		if util.JSON(string(message))["type"] == x {
+
+			for _, value := range pointMap {
+				err = value.WriteJSON(getMap)
+				if err != nil {
+					log.Println("write:", err)
+					break
+				}
+			}
+		} else {
+			for _, value := range clientMap {
+				err = value.WriteJSON(getMap)
+				if err != nil {
+					log.Println("write:", err)
+					break
+				}
 			}
 		}
 

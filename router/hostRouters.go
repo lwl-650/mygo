@@ -19,4 +19,9 @@ func HostRouters(r *gin.Engine) {
 		web.GET("/web2", apis.WebController{}.GetWeb)
 	}
 
+	ssq := r.Group("/")
+	{
+		ssq.GET("/getssq", apis.SsqController{}.GetSsq)
+	}
+
 }
