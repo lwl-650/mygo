@@ -11,6 +11,7 @@ type RedisCore struct {
 	RedisPool redis.Conn
 }
 
+// https://www.csdn.net/tags/Mtzakg5sNDA1NzMtYmxvZwO0O0OO0O0O.html
 func (red *RedisCore) init() {
 	//通过go 向 redis 写入数据 和 读取数据
 	//1. 连接到 redis
