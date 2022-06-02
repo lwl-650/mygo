@@ -34,3 +34,5 @@ https://learnku.com/docs/gorm/v2/query/9733
 # 联查 一对一地址
 
 https://www.jianshu.com/p/4c6594d2fa06
+
+# go get 下载包换成 go install
