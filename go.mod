@@ -3,6 +3,7 @@ module mygo
 go 1.18
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/garyburd/redigo v1.6.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
