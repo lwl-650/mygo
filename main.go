@@ -2,6 +2,7 @@ package main
 
 import (
 	"mygo/router"
+	"mygo/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +22,7 @@ func main() {
 	// 创建一个默认的路由引擎
 
 	// util.Tack()
+	util.Snow()
 
 	r := gin.Default()
 	r.Use(router.Content) //全局中间件

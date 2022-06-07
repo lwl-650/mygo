@@ -24,4 +24,9 @@ func HostRouters(r *gin.Engine) {
 		ssq.GET("/getssq", apis.SsqController{}.GetSsq)
 	}
 
+	xue := r.Group("/")
+	{
+		xue.POST("/setXue", apis.XueController{}.SetXue)
+	}
+
 }
