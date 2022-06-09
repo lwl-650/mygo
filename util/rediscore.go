@@ -2,40 +2,46 @@ package util
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/garyburd/redigo/redis"
 )
 
-type RedisCore struct {
-	local     string
-	RedisPool redis.Conn
-}
+var REDIS redis.Conn
 
-// https://www.csdn.net/tags/Mtzakg5sNDA1NzMtYmxvZwO0O0OO0O0O.html
-func (red *RedisCore) init() {
-	//通过go 向 redis 写入数据 和 读取数据
-	//1. 连接到 redis
+func InitRedis() {
 
-	conn, err := redis.Dial("tcp", "127.0.0.1:6379")
+	REDIS, err = redis.Dial("tcp", ReadeIni("redis.host"))
 	if err != nil {
-		fmt.Println("redis Dial err = ", err)
-		return
+		log.Fatal("[GIN-MYSQL] connect to redis error:" + err.Error())
 	}
-	red.RedisPool = conn
-	defer conn.Close() //关闭连接
-	//fmt.Println("conn success ...", conn)
+	log.Println("[GIN-Redis] connected success")
+	// defer REDIS.Close()
 }
 
-func (r *RedisCore) Setredis(k, v string) error {
-
-	_, err = r.RedisPool.Do("SET", k, v)
-	defer r.RedisPool.Close()
+func CloseRedis() {
+	fmt.Println("关闭是否执行")
+	REDIS.Close()
+}
+func SETredis(key string, val interface{}) {
+	_, err = REDIS.Do("SET", key, val)
 	if err != nil {
-		fmt.Println("redis set value failed >>>", err)
+		fmt.Println("redis set failed:", err)
+	} else {
+		fmt.Println("redis set ok")
 	}
 
-	// c := r.RedisPool.Get()
-	// defer c.Close()
-	// _, err := c.Do("SET", k, v)
-	return err
 }
+
+// func CloseRedis() {
+// 	REDIS.Close()
+// }
+// func redis_connect() redis.Conn {
+
+// 	c, err := redis.Dial("tcp", ReadeIni("redis.host"))
+// 	if err != nil {
+// 		log.Fatal("[GIN-MYSQL] connect to redis error:" + err.Error())
+// 	}
+// 	log.Println("[GIN-Redis] connected success")
+// 	return c
+// }

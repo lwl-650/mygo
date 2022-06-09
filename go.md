@@ -1,3 +1,6 @@
+# fresh 热加载运行
+
+
 # 1 生成 go.mod 文件
 
 `` go mod init "文件名"

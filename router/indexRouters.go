@@ -49,5 +49,6 @@ func IndexRoutersInit(r *gin.Engine) {
 		tes.POST("/getMapArr", apis.TesController{}.GetMapArr)
 		tes.POST("/getArrMap", apis.TesController{}.GetArrMap)
 		tes.POST("/zhi", apis.TesController{}.Zhi)
+		tes.POST("/redis", apis.TesController{}.Redis)
 	}
 }

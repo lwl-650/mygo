@@ -89,3 +89,15 @@ func (TesController) Zhi(c *gin.Context) {
 	// util.Success(c, "")
 
 }
+
+func (TesController) Redis(c *gin.Context) {
+
+	// s := make(map[string]int)
+	// s["qq"] = 12
+	// s["vv"] = 45
+
+	s := []int{1, 2, 34, 56}
+
+	util.SETredis("k", s)
+	util.Success(c, "111")
+}
