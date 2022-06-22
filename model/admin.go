@@ -9,7 +9,7 @@ type Admin struct {
 	A_grade    int     `json:"a_grade"`
 	Rhttps     []Rhttp `gorm:"many2many:rhttp_admin;"`
 	Aname      string  `json:"aname"`
-	Aid        int
+	Aid   int
 }
 
 // 创建关联表名函数

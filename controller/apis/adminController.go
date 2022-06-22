@@ -34,8 +34,9 @@ func (AdminController) FindAdmin(c *gin.Context) {
 	a := []model.A{}
 	subQuery1 := util.DB.Model(&admin).Select("a_id")
 	subQuery2 := util.DB.Model(&a).Select("aid")
-	util.DB.Table("(?) as u, (?) as p", subQuery1, subQuery2).Where("a_id = ? AND aid= ?", "aid","a_id").Find(&admin)
-	fmt.Println(subQuery1, "=======")
+	util.DB.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&admin)
+	// fmt.Println(subQuery1, "=======")
+
 	// if util.DB.Find(&admin).Error == nil {
 	util.Success(c, admin)
 	// }

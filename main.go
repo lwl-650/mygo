@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"mygo/router"
+	"mygo/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,6 +33,13 @@ func main() {
 	router.IndexRoutersInit(r)
 	router.HostRouters(r)
 	// 启动HTTP服务，默认在0.0.0.0:8080启动服务
+
+	maps := make(map[string]interface{})
+	maps["sss"] = "sadas"
+
+	s, _ := util.GenerateToken(maps)
+	fmt.Println(s, "----------------------")
+	fmt.Println(util.ConfirmToken(s, maps), "=================")
 
 	r.Run(":8088")
 
