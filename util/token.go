@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -25,9 +26,15 @@ func ConfirmToken(token string, mapClaims jwt.MapClaims) (err error) {
 		fmt.Println(err.Error())
 		return err
 	}
+	c := make(map[int]string)
+
+	fmt.Println(c)
+	fmt.Println(reflect.TypeOf(c))
+	fmt.Println(reflect.TypeOf(Token.Claims))
 	fmt.Println("++++", Token.Claims, "++++")
-	for k, v := range Token.Claims {
-		fmt.Println(k, v)
-	}
+
+	// for k, v := range Token.Claims {
+	// 	fmt.Println(k, v)
+	// }
 	return err
 }
