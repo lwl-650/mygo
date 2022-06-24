@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"reflect"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -17,24 +16,26 @@ func GenerateToken(mapClaims jwt.MapClaims) (string, error) {
 
 }
 
-func ConfirmToken(token string, mapClaims jwt.MapClaims) (err error) {
+func ConfirmToken(token string, mapClaims jwt.MapClaims) (map[string]interface{}, error) {
+
+	maps := make(map[string]interface{})
+
 	Token, err := jwt.ParseWithClaims(token, mapClaims, func(token *jwt.Token) (interface{}, error) {
 
 		return mySigningKey, nil
 	})
 	if err != nil {
 		fmt.Println(err.Error())
-		return err
+		return maps, err
 	}
-	c := make(map[int]string)
 
-	fmt.Println(c)
-	fmt.Println(reflect.TypeOf(c))
-	fmt.Println(reflect.TypeOf(Token.Claims))
-	fmt.Println("++++", Token.Claims, "++++")
+	//将token中的内容存入parmMap
+	claim := Token.Claims.(jwt.MapClaims)
+	var parmMap map[string]interface{}
+	parmMap = make(map[string]interface{})
+	for key, val := range claim {
+		parmMap[key] = val
+	}
 
-	// for k, v := range Token.Claims {
-	// 	fmt.Println(k, v)
-	// }
-	return err
+	return claim, err
 }

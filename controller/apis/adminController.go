@@ -55,6 +55,13 @@ func (AdminController) UpdateAdmin(c *gin.Context) {
 }
 
 func (AdminController) FindAdminByLogin(c *gin.Context) {
+	auser := make(map[string]interface{})
+
+	// mapss := make(map[string]interface{})
+	// token, _ := util.GenerateToken(auser)
+
+	// fmt.Println(util.ConfirmToken(s, mapss), "=================")
+
 	admin := model.Admin{}
 	setLogin := model.Loginadmin{}
 	aname := c.PostForm("aname")
@@ -63,8 +70,13 @@ func (AdminController) FindAdminByLogin(c *gin.Context) {
 	setLogin.Ltime = util.GetTime()
 	if aname != "" && apass != "" {
 		util.DB.Where("a_name=?", aname).First(&admin)
-		fmt.Println(admin.A_pass)
+		fmt.Println("🐱‍🏍 => file: adminController.go => line 73 => func => aname", aname)
+		fmt.Println(admin.A_pass, "888888888888888888")
 		if admin.A_pass == apass {
+			auser["aname"] = admin.A_name
+			auser["apass"] = admin.A_pass
+			token, _ := util.GenerateToken(auser)
+			admin.Token = token
 			util.Success(c, admin)
 			util.DB.Create(&setLogin)
 		} else {
@@ -74,4 +86,14 @@ func (AdminController) FindAdminByLogin(c *gin.Context) {
 		util.Error(c, -1, util.ApiCode.Message[util.ApiCode.FAILED])
 	}
 
+}
+
+func (AdminController) TokenVerification(c *gin.Context) {
+	mapss := make(map[string]interface{})
+	fmt.Println(c.Request.Header.Get("Authorization"))
+	token := c.Request.Header.Get("Authorization")
+	token = token[6:]
+	fmt.Println(util.ConfirmToken(token, mapss))
+	auser, _ := util.ConfirmToken(token, mapss)
+	util.Success(c, auser)
 }

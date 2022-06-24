@@ -25,6 +25,7 @@ func IndexRoutersInit(r *gin.Engine) {
 		admin.GET("/findAdmin", apis.AdminController{}.FindAdmin)
 		admin.PUT("/updateAdmin", apis.AdminController{}.UpdateAdmin)
 		admin.POST("/findAdminLogin", apis.AdminController{}.FindAdminByLogin)
+		admin.POST("/token", apis.AdminController{}.TokenVerification)
 	}
 	qiniu := r.Group("/")
 	{
