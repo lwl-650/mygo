@@ -13,8 +13,10 @@ type UploadController struct{}
 func (UploadController) Xlsx(c *gin.Context) {
 	file, err := c.FormFile("file")
 	fileName := file.Filename
+	text, err := file.Open()
+
 	if err == nil {
-		fmt.Println(file, file.Size, "文件名：", fileName)
+		fmt.Println(text, file.Size, "文件名：", fileName)
 
 		// AnalyzeExcel(file)
 	}
