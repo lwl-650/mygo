@@ -29,4 +29,8 @@ func HostRouters(r *gin.Engine) {
 		xue.POST("/setXue", apis.XueController{}.SetXue)
 	}
 
+	upload := r.Group("/")
+	{
+		upload.POST("/xlsx", apis.UploadController{}.Xlsx)
+	}
 }

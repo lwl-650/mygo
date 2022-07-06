@@ -46,7 +46,7 @@ func (WebsocketController) GetPushNews(c *gin.Context) {
 	)
 	ws, err = upgrader.Upgrade(c.Writer, c.Request, nil)
 
-	for id, _ := range clientMap {
+	for id := range clientMap {
 		if id == c.Query("id") {
 			err = ws.WriteJSON("id已存在")
 			if err != nil {
