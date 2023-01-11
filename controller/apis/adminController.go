@@ -30,11 +30,17 @@ func (AdminController) SetAdmin(c *gin.Context) {
 }
 
 func (AdminController) FindAdmin(c *gin.Context) {
+
 	admin := []model.Admin{}
-	a := []model.A{}
-	subQuery1 := util.DB.Model(&admin).Select("a_id")
-	subQuery2 := util.DB.Model(&a).Select("aid")
-	util.DB.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&admin)
+	// rhttp := []model.Rhttp{}
+	// a := []model.A{}
+	// subQuery1 := util.DB.Model(&admin).Select("a_id")
+	// subQuery2 := util.DB.Model(&a).Select("aid")
+	// subQuery2 := util.DB.Model(&rhttp).Select("r_id")
+	util.DB.Raw("SELECT a.a_id, a.a_name,a.a_pass , b.r_time,b.r_id FROM admin as a ,rhttp as b WHERE a.a_id = b.r_id AND a.a_id = ?", 3).Scan(&admin)
+	// util.DB.Raw("SELECT a.a_id, a.a_name,a.a_pass , b.r_time,b.r_id FROM admin as a ,rhttp as b WHERE a.a_id = ?", 1).Scan(&admin)
+
+	// util.DB.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&admin).Where("a_id = ? ", "aid")
 	// fmt.Println(subQuery1, "=======")
 
 	// if util.DB.Find(&admin).Error == nil {
